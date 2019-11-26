@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App;
+use File;
 
 class controlador extends Controller
 {
@@ -14,9 +15,13 @@ class controlador extends Controller
      */
     public function index(){
 
-        $clientes = App\Cliente::all();
+        //Obtiene todos los registros desde cliente
+        //$clientes = App\Cliente::all();
+        $clientes = App\Cliente::orderBy('apellidos', 'asc')->get();
 
-        return view('inicio', compact('clientes'));
+        $cursos = App\Curso::orderBy('titulo', 'asc')->get();
+
+        return view('inicio', compact('clientes', 'cursos'));
     }
 
     /**
@@ -31,7 +36,7 @@ class controlador extends Controller
     public function crearCliente(Request $requerimiento){
         //Muestra todas los clientes que vienen del formulario:
         //return $requerimiento->all();
-
+        
         $requerimiento ->validate([
             'dni' => 'required|unique:clientes,dni',
             'nombres' => 'required',
@@ -39,6 +44,18 @@ class controlador extends Controller
         ]);
 
         $clienteNuevo =  new App\Cliente;
+
+        if($requerimiento->hasFile('foto')){
+            $archivo = $requerimiento->file('foto');
+            $extension = $archivo -> getClientOriginalExtension();
+            $nombArchivo = time().'.'.$extension;
+            $archivo->move('subidas/', $nombArchivo);
+            $clienteNuevo -> foto = $nombArchivo;
+        }else{
+            $clienteNuevo -> foto = '';
+        }
+
+        
         $clienteNuevo -> nombres = $requerimiento->nombres;
         $clienteNuevo -> apellidos = $requerimiento->apellidos;
         $clienteNuevo -> dni = $requerimiento->dni;
@@ -50,7 +67,8 @@ class controlador extends Controller
     }
     public function editarCliente($id){
         $cliente = App\Cliente::findOrFail($id);
-        return view('clientes.editar', compact('cliente'));
+        
+        return view('clientes.editar', compact('cliente'), [  'cursos'=> $cliente->cursos] ); //compact('cliente'));
         
     }
     public function updateCliente(Request $requerimiento, $id){
@@ -77,6 +95,104 @@ class controlador extends Controller
     public function create()
     {
         //
+    }
+    public function nuevoCurso(){
+        return view('cursos.crear');
+    }
+    public function crearCurso(Request $requerimiento){
+        $requerimiento -> validate([
+            'titulo'=>'required'
+        ]);
+
+        $cursoCrear = new App\Curso;
+        $cursoCrear->titulo = $requerimiento->titulo;
+        $cursoCrear->save();
+
+        return back()->with('mensaje', 'Curso creado con éxito');
+    }
+
+    public function prueba(){
+        
+        
+        /* $curso = App\Curso::findOrFail(3);
+
+        //Agrega un cliente nuevo a un curso, guiado por el ID.
+        //$curso->clientes()->attach(1);
+
+        return $curso->clientes; */
+
+
+        $cliente = App\Cliente::findOrFail(6);
+
+        //$cliente->cursos()->sync(2);
+
+        return view('demo', ['cursos'=> $cliente->cursos] );
+    }
+    public function eliminarFoto($id){
+        $cliente = App\Cliente::findOrFail($id);
+        $nombreArchivo = $cliente -> foto;
+        $cliente -> foto = '';
+        File::delete('subidas/'. $nombreArchivo );
+        
+        $cliente->save();
+        return back()->with('borrado', 'Foto eliminada');
+    }
+    public function nuevaFoto(Request $requerimiento, $id){
+        $cliente = App\Cliente::findOrFail($id);
+
+        if($requerimiento->hasFile('foto')){
+            $archivo = $requerimiento->file('foto');
+            $extension = $archivo -> getClientOriginalExtension();
+            $nombArchivo = time().'.'.$extension;
+            $archivo->move('subidas/', $nombArchivo);
+            $cliente -> foto = $nombArchivo;
+        }else{
+            $cliente -> foto = '';
+        }
+
+        $cliente -> save();
+
+        return back()->with('fotoSubida', 'Foto actualizada con éxito');
+    }
+    public function nuevoClienteCurso(Request $requisito){
+        $cliente = App\Cliente::findOrFail($requisito->idCliente);
+        $cliente->cursos()->attach($requisito->idCursos, ['emitido' => $requisito->fechaInicio, 'vencimiento'=>$requisito->fechaFin, 'codigo'=>$requisito->codigo ]);
+
+        return back()->with('mensaje', 'Asociado correctamente');
+        //return $requisito;
+    }
+
+    public function carnet($id = null, $num = null){
+        //return 'hola '.$id." - ".$num;
+        if($id == null){
+            return view ('carnet.escoger');
+        }else if($num == null){
+            
+            $cursos = App\Cliente::findOrFail($id)->cursos()->get();
+            //return "ir a cursos con el ". $id;
+            return view ('carnet.cursos', compact('cursos', 'id'));
+        }else{
+            //$cliente = App\Cliente::findOrFail($id)->cursos()->where('id', 1);
+            $cliente = App\Cliente::findOrFail($id)->get()->first();
+            $curso = App\Cliente::findOrFail($id)->cursos()->where('cursos.id', $num)->get()->first();
+
+
+            return view ('carnet.mostrar', compact('cliente', 'curso'));
+            //return $cliente;
+            //return $cursos;
+        }
+
+    }
+    public function buscarDniFront(Request $requisito){
+        $cliente = App\Cliente::where('dni', $requisito->dni)->get();
+        //return $cliente->count();
+        if( count($cliente)>=1 ){
+            return redirect()->route('carnet', $cliente->first()->id);
+            //return $cliente->first()->id;
+        }else{
+            return back()->with('noHay', 'No se encontraró el D.N.I. que proporcionó ');
+        }
+        
     }
 
     /**
@@ -121,7 +237,6 @@ class controlador extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
     }
 
     /**
