@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App;
 use File;
+use Auth;
 
 class controlador extends Controller
 {
@@ -14,6 +15,10 @@ class controlador extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(){
+        return view ('carnet.escoger');
+    }
+
+    public function panel(){
 
         //Obtiene todos los registros desde cliente
         //$clientes = App\Cliente::all();
@@ -193,6 +198,25 @@ class controlador extends Controller
             return back()->with('noHay', 'No se encontraró el D.N.I. que proporcionó ');
         }
         
+    }
+    public function login(){
+        return view("login");
+    }
+    public function iniciar(Request $requisito){
+        $credenciales = $requisito->validate([
+            'email'=>'required',
+            'password'=>'required'
+        ]);
+        //return $credenciales;
+
+        if (\Auth::attempt(['email' => request('email'), 'password' => request('password')])) {
+            //return redirect()->intended('¿?'));
+            //return "logueado";
+            return redirect()->route("panel");
+        }else{
+            //return 'campos incorrectos';
+            return back()->withInput()->with('mensaje', 'Los campos ingresados no coinciden');
+        }
     }
 
     /**

@@ -27,6 +27,9 @@
         <li class="nav-item @if(Route::currentRouteName()=='cursoCrear') active @endif">
           <a href="{{route('cursoCrear')}}" class="nav-link">Crear Curso</a>
         </li>
+        <li class="nav-item ">
+          <a href="{{route('logout')}}" class="nav-link">Salir</a>
+        </li>
       </ul>
   </div>
 </nav>

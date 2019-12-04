@@ -2,6 +2,8 @@
 
 Route::get('/', 'controlador@index')->name('index');
 
+Route::get('/panel', 'controlador@panel')->name('panel');
+
 Route::get('/nuevocliente', function () { return view('nuevoempleado'); })->name('nuevoEmpleado');
 
 Route::get('/equipo/{nombre?}', 'controlador@equipo')->name('equipo');
@@ -30,6 +32,12 @@ Route::get('/carnet/{id?}', 'controlador@carnet')->name('carnet');
 Route::get('/carnet/{id?}/curso/{num?}', 'controlador@carnet')->name('carnet');
 
 Route::post('buscarDniFront', 'controlador@buscarDniFront')->name('buscarDniFront');
+
+Route::get('/iniciar', 'controlador@login')->name('login');
+
+Route::post('login', 'controlador@iniciar')->name('login.iniciar');
+
+Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout')->name('logout');
 
 
 /*Pruebas*/
