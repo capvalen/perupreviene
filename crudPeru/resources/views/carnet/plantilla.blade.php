@@ -21,7 +21,7 @@
 	</style>
 	<section>
 	<div class="container ">
-		<div class="subContenedor m-5 p-3 rounded col-8">
+		<div class="subContenedor m-5 p-3 rounded col-8 ml-auto mr-auto">
 			<center class="d-print-none">
 				<img src="{{ url('images/banner.png') }}" class="img-fluid">
 			</center>

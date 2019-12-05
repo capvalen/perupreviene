@@ -39,6 +39,8 @@ Route::post('login', 'controlador@iniciar')->name('login.iniciar');
 
 Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout')->name('logout');
 
+Auth::routes(); //['register' => false]
+
 
 /*Pruebas*/
 Route::get('/prueba', 'controlador@prueba')->name('prueba');

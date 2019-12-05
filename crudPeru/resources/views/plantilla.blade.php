@@ -10,19 +10,19 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-3">
-  <a class="navbar-brand" href="{{route('index')}}">
+  <a class="navbar-brand" href="{{route('panel')}}">
     Equipo Perú Prevenir
   </a>
   <div class="collapse navbar-collapse">
     <ul class="navbar-nav">
         <li class="nav-item ">
-          <a class="nav-link @if(Route::currentRouteName()=='index') active @endif" href="{{ route('index') }}">Inicio</span></a>
+          <a class="nav-link @if(Route::currentRouteName()=='panel') active @endif" href="{{ route('panel') }}">Inicio</span></a>
         </li>
         <li class="nav-item d-none">
           <a class="nav-link" href="{{ route('equipo') }}">Equipo</a>
         </li>
         <li class="nav-item @if(Route::currentRouteName()=='nuevoEmpleado') active @endif">
-          <a href="{{route('nuevoEmpleado')}}" class="nav-link">Crear empleado</a>
+          <a href="{{route('nuevoEmpleado')}}" class="nav-link">Crear alumno</a>
         </li>
         <li class="nav-item @if(Route::currentRouteName()=='cursoCrear') active @endif">
           <a href="{{route('cursoCrear')}}" class="nav-link">Crear Curso</a>

@@ -5,7 +5,7 @@
 <h1>Nuevo curso</h1>
 
 @if (session('mensaje'))
-<div class="alert alert-success">{{session('mensaje')}} puedes <a href="{{route('index')}}">volver aquí</a> para visualizarlo</div>
+<div class="alert alert-success">{{session('mensaje')}} puedes <a href="{{route('panel')}}">volver aquí</a> para visualizarlo</div>
 @endif
 
 <div class="card col-md-6">

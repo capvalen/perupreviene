@@ -195,7 +195,7 @@ class controlador extends Controller
             return redirect()->route('carnet', $cliente->first()->id);
             //return $cliente->first()->id;
         }else{
-            return back()->with('noHay', 'No se encontraró el D.N.I. que proporcionó ');
+            return back()->with('noHay', 'No se encontró el D.N.I. que proporcionó ');
         }
         
     }
