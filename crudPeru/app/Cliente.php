@@ -14,4 +14,7 @@ class Cliente extends Model
     public function cursos(){
         return $this->belongsToMany(Curso::class, 'curso_cliente')->withPivot('emitido', 'vencimiento', 'codigo');
     }
+    public function prueba(){
+        return 4;
+    }
 }

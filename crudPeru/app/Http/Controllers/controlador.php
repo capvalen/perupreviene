@@ -127,7 +127,8 @@ class controlador extends Controller
         return $curso->clientes; */
 
 
-        $cliente = App\Cliente::findOrFail(6);
+				$cliente = App\Cliente::findOrFail(1);
+				return $cliente->cursos;
 
         //$cliente->cursos()->sync(2);
 
