@@ -179,9 +179,10 @@ class controlador extends Controller
             return view ('carnet.cursos', compact('cursos', 'id'));
         }else{
             //$cliente = App\Cliente::findOrFail($id)->cursos()->where('id', 1);
-            $cliente = App\Cliente::findOrFail($id)->get()->first();
+            //$cliente = App\Cliente::findOrFail($id)->get();
+            $cliente = App\Cliente::where('id', $id)->get()->first();
             $curso = App\Cliente::findOrFail($id)->cursos()->where('cursos.id', $num)->get()->first();
-
+            
 
             return view ('carnet.mostrar', compact('cliente', 'curso'));
             //return $cliente;
