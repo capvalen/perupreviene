@@ -36,11 +36,7 @@
       <td>
         <button type="button" class="btn btn-outline-success" onclick="abrirModal({{$cliente->id}})" ><i class="icofont-id"></i> </button>
         <a class="btn btn-outline-primary d-inline" href='{{route('clientes.editar', $cliente)}}'><i class="icofont-edit"></i></a>
-        <form class="d-inline" action="{{route('clientes.eliminar', $cliente)}}" method="POST">
-          @csrf
-          @method('DELETE')
-          <button class="btn btn-outline-danger" type="submit"><i class="icofont-trash"></i></button>
-        </form>
+        <a class="btn btn-outline-danger d-inline" href='{{route('curso.cliente.borrar', $cliente->id)}}'><i class="icofont-trash"></i></a>
       </td>
     </tr>  
     @endforeach

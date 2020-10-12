@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App;
 use File;
 use Auth;
+use Redirect;
 
 class controlador extends Controller
 {
@@ -95,7 +96,8 @@ class controlador extends Controller
     public function deleteCliente($id){
         $clienteEliminar = App\Cliente::findOrFail($id);
         $clienteEliminar->delete();
-        return back()->with('borrado', 'El cliente ha sido borrado' );
+        //return back()->with('borrado', 'El cliente ha sido borrado' );
+        return Redirect::to('panel')->with('borrado', 'El cliente ha sido borrado' );
     }
     public function create()
     {
@@ -182,6 +184,7 @@ class controlador extends Controller
             //$cliente = App\Cliente::findOrFail($id)->get();
             $cliente = App\Cliente::where('id', $id)->get()->first();
             $curso = App\Cliente::findOrFail($id)->cursos()->where('cursos.id', $num)->get()->first();
+            //return $cliente;
             
 
             return view ('carnet.mostrar', compact('cliente', 'curso'));
@@ -219,6 +222,20 @@ class controlador extends Controller
             //return 'campos incorrectos';
             return back()->withInput()->with('mensaje', 'Los campos ingresados no coinciden');
         }
+    }
+
+    public function vistaBorrar($id){
+        $cliente = App\Cliente::where('id', $id)->get()->first();
+        $cursos = App\Cliente::findOrFail($id)->cursos()->get();
+        //return $cursos;
+        return view ('clientes.borrar', compact('cliente', 'cursos'));
+    }
+
+    public function eliminarCurso($idCliente, $idCurso){
+        $cliente = App\Cliente::findOrFail($idCliente);
+        $cliente->cursos()->detach($idCurso);
+        
+        return back()->with('borrado', 'El curso ha sido borrado' );
     }
 
     /**

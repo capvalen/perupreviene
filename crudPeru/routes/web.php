@@ -24,10 +24,14 @@ Route::get('nuevoCurso', 'controlador@nuevoCurso')->name('cursoCrear');
 
 Route::post('/crearCurso', 'controlador@crearCurso')->name('curso.crear');
 
+Route::delete('/eliminarCurso/{cliente}/{id}', 'controlador@eliminarCurso')->name('curso.eliminar');
+
 Route::post('/nuevoClienteCurso', 'controlador@nuevoClienteCurso')->name('nuevoClienteCurso');
 
 //Route::get('/carnet/{$idCliente}/curso/{$idCurso}', 'controlador@carnet')->name('carnet');
 Route::get('/carnet/{id?}', 'controlador@carnet')->name('carnet');
+
+Route::get('/carnet/borrar/{id}', 'controlador@vistaBorrar')->name('curso.cliente.borrar');
 
 Route::get('/carnet/{id?}/curso/{num?}', 'controlador@carnet')->name('carnet');
 

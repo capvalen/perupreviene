@@ -20,7 +20,7 @@
          <div class="invalid-feedback"> {{ $message }} </div>
         @enderror
         </div>
-        <input class="form-control my-2 @error('apellidos') is-invalid @enderror" type="text" name="apellidos" placeholder="Apellidos y Nombres" value='{{old('apellidos')}}' autocomplete="off">
+        <input class="form-control my-2 @error('apellidos') is-invalid @enderror" type="text" name="apellidos" placeholder="Apellidos completos" value='{{old('apellidos')}}' autocomplete="off">
         @error('apellidos')
           <div class="invalid-feedback"> {{ $message }} </div>
         @enderror
